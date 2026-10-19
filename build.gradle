@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '4.1.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id("io.freefair.lombok") version "9.5.0"
+}
+
+
+
+group = 'by.pavelkht'
+version = '0.0.1-SNAPSHOT'
+description = 'service_program_on_spring'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+
+dependencies {
+    implementation project(':custom-logging-spring-boot-starter')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
+
+    implementation("org.hibernate.validator:hibernate-validator")
+
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat-runtime'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+

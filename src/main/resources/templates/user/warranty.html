@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список дефектов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 1300px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        thead {
+            background: #4CAF50;
+            color: white;
+        }
+        th {
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+            vertical-align: top;
+        }
+        tbody tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        tbody tr:hover {
+            background: #f1f8f2;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        /* Числовые / короткие поля */
+        .serial-cell,
+        .oil-cell {
+            font-family: monospace;
+            font-size: 13px;
+            color: #666;
+        }
+        /* Длинные текстовые поля */
+        .text-cell {
+            max-width: 200px;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.4;
+        }
+        /* Ссылка на фото */
+        .photo-link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .photo-link:hover {
+            text-decoration: underline;
+        }
+        .photo-missing {
+            color: #bbb;
+        }
+        .empty {
+            text-align: center;
+            color: #666;
+            padding: 30px 0;
+            font-size: 15px;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .logout-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔧 Список дефектов оборудования</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Серийный №</th>
+            <th>Уровень масла</th>
+            <th>Состояние масла</th>
+            <th>Причина обращения</th>
+            <th>Описание дефекта</th>
+            <th>Фото</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="defect : ${defects}">
+
+            <td th:text="${defect.equipmentName}">Насос N-100</td>
+
+            <td class="serial-cell" th:text="${defect.serialNumber}">SN-001234</td>
+
+            <td class="oil-cell" th:text="${defect.oilLevel}">Норма</td>
+
+            <td class="oil-cell" th:text="${defect.oilCondition}">Чистое</td>
+
+            <td class="text-cell" th:text="${defect.reason}">Плановый осмотр</td>
+
+            <td class="text-cell" th:text="${defect.descriptionDefect}">
+                Повышенная вибрация при работе
+            </td>
+
+            <td>
+                <a th:if="${defect.linkPhoto != null and !defect.linkPhoto.isEmpty()}"
+                   th:href="${defect.linkPhoto}"
+                   target="_blank"
+                   class="photo-link"
+                   onclick="event.stopPropagation();">
+                    📷 Открыть
+                </a>
+                <span th:unless="${defect.linkPhoto != null and !defect.linkPhoto.isEmpty()}"
+                      class="photo-missing">—</span>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(defects)}">
+            <td colspan="7" class="empty">Дефекты не найдены</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/orders/{id}(id=${userId})}"  method="get" style="margin: 0;">
+        <button type="submit" class="logout-btn">← Выйти</button>
+    </form>
+</div>
+</body>
+</html>

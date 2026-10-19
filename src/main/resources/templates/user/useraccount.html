@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Личный кабинет</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .user-info {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #4CAF50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 34px;
+      font-weight: bold;
+      user-select: none;
+    }
+    .username {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .user-role {
+      font-size: 14px;
+      color: #666;
+      margin-top: 4px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    .logout-btn {
+      background: #f44336;
+    }
+    .logout-btn:hover {
+      background: #d32f2f;
+    }
+    .avatar-wrapper {
+      display: flex;
+      justify-content: center;   /* центрирование по горизонтали */
+      margin-bottom: 20px;       /* отступ от остальных полей формы */
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #e0e0e0;   /* серый круг-заглушка */
+      overflow: hidden;
+    }
+    .avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* прячем артефакты битой картинки */
+      color: transparent;
+      font-size: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>👤 Личный кабинет</h1>
+
+  <div class="avatar-wrapper">
+    <div class="avatar">
+      <img th:src="@{/api/v1/user/{userId}/avatar(userId=${user.id})}"
+           onerror="this.style.display='none';">
+    </div>
+  </div>
+
+  <div class="user-info">
+    <div class="username"> <h2> <span th:text="${user.getName()}">username</span> </h2> </div>
+    <div class="user-role"> <span th:text="${user.getEmail()}">email</span> </div>
+  </div>
+
+  <form th:action="'/profile/edit/' + ${user.getId()}" method="get">
+    <button type="submit">Редактировать профиль</button>
+  </form>
+
+  <form th:action="'/orders/' + ${user.getId()}" method="get">
+    <button type="submit">Посмотреть заказы</button>
+  </form>
+
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" class="logout-btn">Выйти</button>
+  </form>
+</div>
+</body>
+</html>

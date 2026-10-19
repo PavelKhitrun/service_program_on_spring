@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактирование профиля</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 380px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+    /* Заблокированные поля (логин, id) */
+    input[readonly] {
+      background: #f5f5f5;
+      color: #888;
+      cursor: not-allowed;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    /* Кнопка отмены — серая */
+    .cancel-btn {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .cancel-btn:hover {
+      background: #d0d0d0;
+    }
+    .error {
+      color: #f44336;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .success {
+      color: #4CAF50;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .required {
+      color: #f44336;
+    }
+    .field-error {
+      color: #f44336;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .back-link a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #999;
+      margin: 20px 0 12px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>✏️ Редактирование профиля</h1>
+
+
+  <!-- th:object — объект формы -->
+  <form th:action="@{/profile/edit/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post" th:object="${user}">
+
+    <!-- Название организации -->
+    <div class="form-group">
+      <label for="organization">
+        Название организации <span class="required">*</span>
+      </label>
+      <input
+              type="text"
+              id="organization"
+              name="organization"
+              th:value="*{name}"
+              placeholder="Введите название организации"
+              required
+      >
+    </div>
+
+    <!-- Логин (только для чтения) -->
+    <div class="form-group">
+      <label for="username">Логин</label>
+      <input
+              type="text"
+              id="username"
+              name="username"
+              th:value="*{login}"
+              readonly
+      >
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">
+        Email <span class="required">*</span>
+      </label>
+      <input
+              type="email"
+              id="email"
+              name="email"
+              th:value="*{email}"
+              placeholder="example@mail.ru"
+              required
+      >
+    </div>
+
+    <!-- Телефон -->
+    <div class="form-group">
+      <label for="phone">
+        Телефон <span class="required">*</span>
+      </label>
+      <input
+              type="tel"
+              id="phone"
+              name="phone"
+              th:value="*{phone}"
+              placeholder="+7 (999) 123-45-67"
+              required
+      >
+    </div>
+
+    <!-- ===== Смена пароля (опционально) ===== -->
+    <div class="section-title">Смена пароля (необязательно)</div>
+
+    <div class="form-group">
+      <label for="password">Новый пароль</label>
+      <input
+              type="password"
+              id="password"
+              name="password"
+              th:value="*{password}"
+              placeholder="Оставьте пустым, если не меняете"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Подтверждение пароля</label>
+      <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              th:value="*{password}"
+              placeholder="Повторите новый пароль"
+      >
+    </div>
+
+    <div class="input-group">
+      <label for="image">Выбрать фото профиля</label>
+      <input type="file" id="image" name="image" accept="image/*">
+    </div>
+
+    <!-- Кнопки -->
+    <button type="submit">Сохранить изменения</button>
+    <button type="button"
+            class="cancel-btn"
+            th:onclick="'window.location.href=\'/user/' + ${user.id} + '\''">Отмена</button>
+  </form>
+
+  <!-- Общие ошибки формы -->
+  <div th:if="${errors}">
+    <p class="error"
+       th:each="error : ${errors}"
+       th:text="${error.defaultMessage}">Error message</p>
+  </div>
+
+  <!-- Сообщение об успехе -->
+  <div th:if="${success}" class="success" th:text="${success}">
+    Изменения сохранены
+  </div>
+</div>
+</body>
+</html>

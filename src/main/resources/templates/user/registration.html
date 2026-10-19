@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .error {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .success {
+            color: #4CAF50;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .login-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .required {
+            color: #f44336;
+        }
+    </style>
+    <div th:insert="~{fragment::locale}"></div>
+</head>
+<body>
+<div class="container" id="container">
+    <h1 id="pageTitle"><span th:text="#{registration.regTitle}">registration</span></h1>
+    <form th:action="@{/registration}" method="post" th:object="${createUser}">
+        <!-- Название организации -->
+        <div class="form-group" id="organizationGroup">
+            <label for="organization"><span th:text="#{registration.regOrganizationName}">organizationName</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="text"
+                    id="organization"
+                    name="organization"
+                    th:value="*{organization}"
+                    placeholder="Введите название организации"
+            required
+            >
+        </div>
+
+        <!-- Логин -->
+        <div class="form-group" id="usernameGroup">
+            <label for="username"><span th:text="#{registration.regLogin}">login</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    th:value="*{username}"
+                    placeholder="Введите логин"
+            required
+            >
+        </div>
+
+        <!-- Email -->
+        <div class="form-group" id="emailGroup">
+            <label for="email"> <span th:text="#{registration.regEmail}">email</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    th:value="*{email}"
+                    placeholder="example@mail.ru"
+            required
+            >
+        </div>
+
+        <div class="form-group" id="phoneGroup">
+            <label for="phone"> <span th:text="#{registration.regPhone}">phone</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    th:value="*{phone}"
+                    placeholder="+7 (999) 123-45-67"
+            required
+            >
+            <div class="error-message" id="phoneError">Введите корректный номер телефона</div>
+        </div>
+
+        <!-- Пароль -->
+        <div class="form-group" id="passwordGroup">
+            <label for="password"> <span th:text="#{registration.regPass}">pass</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Минимум 6 символов"
+                    required
+            >
+        </div>
+
+        <!-- Подтверждение пароля -->
+        <div class="form-group" id="confirmPasswordGroup">
+            <label for="confirmPassword"> <span th:text="#{registration.regConfPass}">confPass</span>
+                <span class="required">*</span>
+            </label>
+            <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Повторите пароль"
+                    required
+            >
+        </div>
+
+        <button type="submit" id="registerBtn"><span th:text="#{registration.submitButton}">registration</span></button>
+    </form>
+
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
+
+    <div class="login-link" id="loginLinkContainer">
+        <span th:text="#{registration.inscriptionHaveAccount}">haveAcc</span> <a href="\login" id="loginLink"><span th:text="#{registration.nameLoginLink}">login</span></a>
+    </div>
+
+</div>
+</body>
+</html>
