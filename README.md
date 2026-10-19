@@ -88,3 +88,10 @@ spring.datasource.password=your_password
 ```bash
 ./gradlew bootRun
 ```
+
+### 4. Swagger UI
+Документация REST API доступна по адресу:
+
+```bash
+http://localhost:8080/swagger-ui/index.html
+```
