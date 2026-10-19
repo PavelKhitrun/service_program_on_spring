@@ -72,19 +72,19 @@
 ```bash
 git clone https://github.com/PavelKhitrun/service_program_on_spring.git
 cd service_program_on_spring
-```bash
+```
 
-**### 2. Настройка базы данных**
+### 2. Настройка базы данных
 Создайте базу данных PostgreSQL и укажите параметры подключения в src/main/resources/application.properties (или application.yml):
 
 ```bash
 spring.datasource.url=jdbc:postgresql://localhost:5432/service_db
 spring.datasource.username=postgres
 spring.datasource.password=your_password
-```bash
+```
 
-**### 3. Запуск приложения**
+### 3. Запуск приложения
 
 ```bash
 ./gradlew bootRun
-```bash
+```
